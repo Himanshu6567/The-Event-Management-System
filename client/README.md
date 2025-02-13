@@ -1,14 +1,16 @@
 # Event Management System
 
 ## Overview
-The **Event Management System** is a full-stack web application designed to help users discover, create, and manage events seamlessly. It allows users to browse events, register for events, and track attendee counts in real-time using **Socket.IO**.
+The **Event Management System** is a full-stack web application designed to help users discover and register for events seamlessly. It allows users to browse events, register for events, and track attendee counts in real-time using **Socket.IO**.
 
 ## Features
 - **User Authentication**: Secure login/signup using JWT authentication.
-- **Event Creation**: Users can create events.
+- **Guest User Login**: Guests can log in with limited access to browse events.
+- **Event Creation**: Users can create events with details like name, date, and location.
 - **Event Discovery**: Browse and filter events based on categories.
 - **Attend Events**: Users can mark attendance for events.
 - **Real-time Updates**: Attendee count updates instantly using **Socket.IO**.
+- **Cloudinary Integration**: Host event images securely on **Cloudinary**.
 - **Responsive UI**: Designed for desktop and mobile users.
 
 ## Technologies Used
@@ -23,6 +25,7 @@ The **Event Management System** is a full-stack web application designed to help
 - Express.js
 - MongoDB (Mongoose for schema modeling)
 - Socket.IO (Server)
+- Cloudinary (For image hosting)
 
 ### **Database**
 - MongoDB Atlas
@@ -32,7 +35,7 @@ The **Event Management System** is a full-stack web application designed to help
 
 ### **1. Clone the Repository**
 ```sh
-git clone https://github.com/your-repo/event-management-system.git
+git clone https://github.com/Himanshu6567/The-Event-Management-System
 cd event-management-system
 ```
 
@@ -50,19 +53,25 @@ npm install
 ```
 
 ### **3. Set Up Environment Variables**
-Create a `.env` file in the `server` directory and add the following:
+open a `.env` file in the `server` directory and add the following:
 ```env
-PORT=5000
+PORT=8000
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
 CLIENT_URL=http://localhost:5173
+```
+
+open a `cloudinary-config.js` file in the `server` directory and add the following:
+```
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ### **4. Start the Application**
 #### **Start Backend**
 ```sh
 cd server
-npm run dev
+nodemon index.js
 ```
 
 #### **Start Frontend**
@@ -76,41 +85,36 @@ The application will be available at `http://localhost:5173`.
 ---
 ## API Endpoints
 ### **User Authentication**
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user & receive token
-- `GET /api/auth/user` - Get user details (requires authentication)
+- `POST /user/createNewUser` - Register a new user
+- `POST /user/loginUser` - Login user & receive token
 
 ### **Events Management**
-- `GET /api/events` - Fetch all events
-- `POST /api/events` - Create a new event
-- `GET /api/events/:id` - Get event details
-- `PUT /api/events/:id` - Update event details
-- `DELETE /api/events/:id` - Delete an event
+- `GET /allEvents` - Fetch all events
+- `POST /event/createNewEvent` - Create a new event with Cloudinary image hosting
+- `GET /event/MyCreatedEvents` - Get event which created by user
+- `GET /event/getDetails/:id` - Get event details
+- `GET /event/myAttendedEvents/` - Get events attended by user
 
 ### **Attending Events (Real-Time Updates)**
-- `POST /api/events/:id/attend` - Mark user as attending an event
+- `POST /event/join/:id` - Mark user as attending an event
 - **Socket.IO Event**: `updateAttendees` - Broadcast attendee updates to all clients
 
 ---
 ## Usage Guide
 1. **Sign Up/Login**: Create an account or log in.
 2. **Browse Events**: View upcoming events on the home page.
-3. **Create an Event**: Click "Create Event" and fill in the details.
+3. **Create an Event**: Click "Create Event" and fill in the details along with an image.
 4. **Attend an Event**: Click "Attend" to join an event (attendee count updates in real-time).
-5. **Manage Events**: Users can edit or delete their created events.
 
 ---
 ## Future Enhancements
-- Implement **Google OAuth** for authentication.
-- Add **payment integration** for ticketed events.
-- Introduce **admin panel** for better event moderation.
 - Improve UI/UX with animations and dark mode support.
 
 ---
 ## Contributors
-- **Himanshu Chandola** - [GitHub](https://github.com/your-profile)
+- **Himanshu Chandola** - [GitHub](https://github.com/Himanshu6567)
 
 ---
 ## License
-This project is open-source and available under the **MIT License**.
+This project is open-source.
 
